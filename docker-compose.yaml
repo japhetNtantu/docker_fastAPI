@@ -1,0 +1,32 @@
+version: '3.8'
+ 
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: mysql+pymysql://japhet:japhet@host.docker.internal:3306/items
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: japhet
+      MYSQL_DATABASE: items
+      MYSQL_USER: japhet
+      MYSQL_PASSWORD: japhet
+    ports:
+      - "3306:3306"
+ 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: host.docker.internal
+      MYSQL_ROOT_PASSWORD: japhet
+    ports:
+      - "8889:80"
+    depends_on:
+      - db
